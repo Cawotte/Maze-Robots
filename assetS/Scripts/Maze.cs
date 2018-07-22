@@ -10,6 +10,7 @@ public class Maze {
     {
         get { return height; }
     }
+
     private int width;
     public int Width
     {
@@ -20,6 +21,7 @@ public class Maze {
     // 1 = wall
     private int[,] maze;
     
+    //Cell coordinate of the start Pos
     private Vector2Int startPos;
     public Vector2Int StartPos
     {
@@ -29,6 +31,7 @@ public class Maze {
                 startPos = value;
         }
     }
+    //Cell coordinate of the exit Pos
     private Vector2Int exitPos;
     public Vector2Int ExitPos
     {
@@ -40,8 +43,10 @@ public class Maze {
         }
     }
 
+    //Random seed
     private static System.Random rand = new System.Random();
 
+    //Generate a maze with the given startPos
     public Maze(int height, int width, Vector2Int startPos) 
     {
         
@@ -54,11 +59,13 @@ public class Maze {
 
     }
 
+    //Generate an empty maze with the given heigth/width and random StartPos and exitPos.
     public Maze(int height, int width)
     {
         this.height = height - (1 - height % 2);
         this.width = width - (1 - width % 2);
         this.startPos = RandomStartPos();
+        this.exitPos = RandomExitPos();
 
         //initialized at 0.
         maze = new int[height, width];
@@ -137,7 +144,7 @@ public class Maze {
 
     }
 
-    //Trim the size of the maze so the heigth and widht are odd numbers (better display)
+    //Trim the size of the maze so the heigth and width are odd numbers (better display)
     public void trimSize()
     {
         height -= (1 - height % 2);
@@ -145,13 +152,14 @@ public class Maze {
 
     }
 
+    //Pick a random valid start pos. (Inside of the maze, on empty cases)
     private Vector2Int RandomStartPos()
     {
         int x, y;
         x = rand.Next(1, height);
-        x -= (1 - x % 2);
+        x -= (1 - x % 2); //Trim to odd number if the number is even
         y = rand.Next(1, width);
-        y -= (1 - y % 2);
+        y -= (1 - y % 2); //Trim to odd number if the number is even
 
         return new Vector2Int(x, y);
 
@@ -186,6 +194,7 @@ public class Maze {
                 break;
             default:
                 posExit = new Vector2Int(0, 1);
+                Debug.LogWarning("Default case on ExitPos switch ! (RandomExitPos)");
                 break;
         }
         
@@ -195,25 +204,33 @@ public class Maze {
     }
 
 
+    //True if the cell (x,y) is in bound of the maze, else false.
     public bool IsInBound(int x, int y)
     {
         return (x >= 0) && (y >= 0) && (x < height) && (y < width);
     }
+
+    //True if the cell (x,y) is in bound of the maze, else false.
     public bool IsInBound(Vector2Int pos)
     {
         return IsInBound(pos.x, pos.y);
     }
+
+    //Return the content of the cell (x,y)
     public int getCell(int x, int y)
     {
         if (!IsInBound(x, y))
             return -1;
         return maze[x, y];
     }
+
+    //Return the content of the cell (x,y)
     public int getCell(Vector2Int pos)
     {
         return getCell(pos.x, pos.y);
     }
 
+    //Display the Maze in the logs
     private void printMazeLog()
     {
         string maze = "";
@@ -244,6 +261,7 @@ public class Maze {
 
     }
 
+    //Used to shuffle a list (direction in our case)
     public void Shuffle<T>(IList<T> list)
     {
         int n = list.Count;
