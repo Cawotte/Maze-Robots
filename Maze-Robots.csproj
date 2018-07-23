@@ -232,8 +232,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="assetS\Scripts\Maze.cs" />
-    <Compile Include="assetS\Scripts\MazeManager.cs" />
+    <Compile Include="assets\Scripts\Maze.cs" />
+    <Compile Include="assets\Scripts\MazeManager.cs" />
+    <Compile Include="assets\Scripts\MazeRenderer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
